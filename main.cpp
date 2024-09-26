@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <cassert>
 
 using namespace std;
 
@@ -11,7 +12,41 @@ void printBusinesses(const std::vector<std::string>& businesses) {
     }
 }
 
+void addBusiness(std::vector<std::string>& businesses, const std::string& business) {
+    businesses.push_back(business);
+    std::sort(businesses.begin(), businesses.end());
+}
+
+void testAddBusiness() {
+    std::vector<std::string> businesses;
+
+    addBusiness(businesses, "Apple");
+    assert(businesses.size() == 1);
+    assert(businesses[0] == "Apple");
+
+    addBusiness(businesses, "Google");
+    assert(businesses.size() == 2);
+    assert(businesses[0] == "Apple");
+    assert(businesses[1] == "Google");
+
+    addBusiness(businesses, "Microsoft");
+    assert(businesses.size() == 3);
+    assert(businesses[0] == "Apple");
+    assert(businesses[1] == "Google");
+    assert(businesses[2] == "Microsoft");
+}
+
+void testPrintBusinesses() {
+    std::vector<std::string> businesses = {"Apple", "Google", "Microsoft"};
+    std::cout << "Expected output:\n    Apple\n    Google\n    Microsoft\n";
+    std::cout << "Actual output:\n";
+    printBusinesses(businesses);
+}
+
 int main() {
+    testAddBusiness();
+    testPrintBusinesses();
+
     std::vector<std::string> businesses;
     std::string input;
     std::string choice;
@@ -22,9 +57,7 @@ int main() {
         std::cout << "Please enter the name of a business:  ";
         std::getline(std::cin, input);
 
-        businesses.push_back(input);
-
-        std::sort(businesses.begin(), businesses.end());
+        addBusiness(businesses, input);
 
         if (businesses.size() == 1) {
             std::cout << "Your business is:" << std::endl;
